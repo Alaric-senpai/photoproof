@@ -1,0 +1,19 @@
+{
+  "user": {
+    "signOut": "Sign out",
+    "name": "Name",
+    "email": "Email",
+    "updateName": {
+      "title": "Update name",
+      "cancel": "Cancel",
+      "save": "Save",
+      "error": "An error occurred during name update",
+      "required": "Name cannot be empty"
+    }
+  },
+  "displayPreferences": {
+    "title": "Display preferences",
+    "theme": "Theme",
+    "language": "Language"
+  }
+}

@@ -1,0 +1,51 @@
+import { Stack, useRouter } from 'expo-router';
+import { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { authClient } from '@/features/auth/client';
+import { ViewAuthOnboarding } from '@/features/auth/view-auth-onboarding';
+import { useThemedStyle } from '@/features/theme/use-themed-style';
+
+export default function LoggedLayout() {
+  const router = useRouter();
+  const session = authClient.useSession();
+  const { t } = useTranslation(['layout']);
+
+  const routerReplace = router.replace;
+  useEffect(() => {
+    if (!session.isPending && !session.data?.user) {
+      routerReplace('/(public)/sign-in');
+    }
+  }, [routerReplace, session.data?.user, session.isPending]);
+
+  const themedStyle = useThemedStyle();
+
+  if (!session.data?.user?.name) {
+    return <ViewAuthOnboarding />;
+  }
+
+  return (
+    <Stack
+      screenOptions={{
+        headerShown: false,
+        headerStyle: { backgroundColor: themedStyle.backgroundColor },
+        headerTintColor: themedStyle.color,
+      }}
+    >
+      <Stack.Protected guard={!!session.data?.user?.id}>
+        <Stack.Screen
+          name="(tabs)"
+          options={{ title: t('layout:tabs.books.title') }}
+        />
+        {/* Add new logged-in View that's not included in tabs here */}
+        <Stack.Screen
+          name="books/[id]"
+          options={(props) => ({
+            headerShown: true,
+            title: (props.route.params as { title?: string })?.title,
+          })}
+        />
+      </Stack.Protected>
+    </Stack>
+  );
+}

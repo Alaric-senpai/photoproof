@@ -1,0 +1,12 @@
+{
+  "common": {
+    "title": "Title",
+    "author": "Author",
+    "genre": "Genre",
+    "publisher": "Publisher",
+    "byCapitalized": "By"
+  },
+  "list": {
+    "empty": "There are no books"
+  }
+}

@@ -1,0 +1,46 @@
+packages:
+  - '.'
+
+minimumReleaseAge: 10080
+minimumReleaseAgeExclude:
+  - '@expo/*'
+  - 'expo'
+  - 'expo-*'
+  # Pulled by expo@58.x but without the `expo-` prefix: part of the Expo SDK,
+  # excluded from the maturity wait like the rest of the Expo ecosystem.
+  - 'babel-preset-expo'
+  - 'react'
+  - 'react-dom'
+  - 'react-native'
+  - 'react-native-*'
+  - '@react-native/*'
+  # expo@58 → @expo/cli, @expo/metro-config, @expo/metro-file-map → 2g@1.0.1
+  # (github.com/kitten/2g — structured event logs; maintainer philpl, npm OIDC + SLSA).
+  # Excluded only for minimumReleaseAge (7d); not a trust-policy workaround.
+  - '2g'
+  # expo@58 → @expo/metro-config → noxcturnal (+ platform binaries, oxc types); maturity-only.
+  - 'noxcturnal'
+  - '@noxcturnal/*'
+  - '@oxc-project/*'
+  # Internal Bearstudio package: allows a bump without waiting the 7-day maturity period.
+  - '@bearstudio/ui-state'
+  # 1.13.0 (2026-10-19) forwards every react-native export, including
+  # AssetRegistry. 1.12.2 does not, and native tabs crash on Android without it.
+  # Matures 2026-10-26; drop this exclude after that.
+  - 'uniwind'
+trustPolicy: no-downgrade
+overrides:
+  expo-constants: ~58.0.12
+  '@expo/dom-webview': ~58.0.2
+  # 0.7.x / 1.0.x lack npm provenance (TRUST_DOWNGRADE false positive); 2.0.x is API-compatible.
+  ua-parser-js: 2.0.10
+trustPolicyExclude:
+  # Backports of the CVE-2022-25883 (ReDoS) fix on the 5.x/6.x lines: signed by
+  # the npm registry but without SLSA provenance attestation, unlike the 7.x
+  # releases published earlier → `no-downgrade` false positive. Canonical npm package (npm/node-semver),
+  # 5.7.2 and 6.3.1 published on the same day (2023-07-10) by the npm team.
+  - 'semver@5.7.2 || 6.3.1'
+allowBuilds:
+  esbuild: true
+  lefthook: true
+  node-datachannel: true
